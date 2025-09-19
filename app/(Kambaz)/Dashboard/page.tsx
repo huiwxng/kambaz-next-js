@@ -13,6 +13,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -32,6 +33,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -51,6 +53,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -70,6 +73,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -89,6 +93,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -108,6 +113,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -127,6 +133,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -146,6 +153,7 @@ export default function Dashboard() {
 					>
 						<Image
 							src="/images/reactjs.jpg"
+							alt="image"
 							width={200}
 							height={150}
 						/>
