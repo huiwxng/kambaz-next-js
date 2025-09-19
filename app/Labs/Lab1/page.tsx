@@ -183,6 +183,7 @@ export default function Lab1() {
 					src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"
 					alt="Starship"
 					width={400}
+					height={300}
 				/>
 				<br />
 				Loading a local image:
@@ -192,6 +193,7 @@ export default function Lab1() {
 					src="/images/teslabot.jpg"
 					alt="Teslabot"
 					width={200}
+					height={300}
 				/>
 			</div>
 			<div id="wd-forms">
@@ -231,11 +233,14 @@ export default function Lab1() {
 					<h5>Text boxes</h5>
 					<label>Biography:</label>
 					<br />
-					<textarea id="wd-textarea" cols={30} rows={10}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-						sed do eiusmod tempor incididunt ut labore et dolore
-						magna aliqua.
-					</textarea>
+					<textarea
+						id="wd-textarea"
+						cols={30}
+						rows={10}
+						defaultValue={
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+						}
+					></textarea>
 					<h5 id="wd-buttons">Buttons</h5>
 					<button
 						type="button"
@@ -311,12 +316,10 @@ export default function Lab1() {
 						Favorite movie genre:{" "}
 					</label>
 					<br />
-					<select id="wd-select-one-genre">
+					<select id="wd-select-one-genre" defaultValue={"SCIFI"}>
 						<option value="COMEDY">Comedy</option>
 						<option value="DRAMA">Drama</option>
-						<option selected value="SCIFI">
-							Science Fiction
-						</option>
+						<option value="SCIFI">Science Fiction</option>
 						<option value="FANTASY">Fantasy</option>
 					</select>
 					<h5>Select many</h5>
@@ -325,16 +328,14 @@ export default function Lab1() {
 						Favorite movie genres:{" "}
 					</label>
 					<br />
-					<select multiple id="wd-select-many-genre">
-						<option value="COMEDY" selected>
-							{" "}
-							Comedy{" "}
-						</option>
+					<select
+						multiple
+						id="wd-select-many-genre"
+						defaultValue={["COMEDY", "SCIFI"]}
+					>
+						<option value="COMEDY"> Comedy </option>
 						<option value="DRAMA"> Drama </option>
-						<option value="SCIFI" selected>
-							{" "}
-							Science Fiction{" "}
-						</option>
+						<option value="SCIFI"> Science Fiction </option>
 						<option value="FANTASY"> Fantasy </option>
 					</select>
 					<h4>Other HTML field types</h4>
