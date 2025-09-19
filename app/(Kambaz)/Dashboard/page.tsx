@@ -27,7 +27,7 @@ export default function Dashboard() {
 					</Link>
 				</div>
 				<div className="wd-dashboard-course">
-                    <Link
+					<Link
 						href="/Courses/4550"
 						className="wd-dashboard-course-link"
 					>
@@ -45,9 +45,9 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
+				</div>
 				<div className="wd-dashboard-course">
-                    <Link
+					<Link
 						href="/Courses/4700"
 						className="wd-dashboard-course-link"
 					>
@@ -65,9 +65,9 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link
+				</div>
+				<div className="wd-dashboard-course">
+					<Link
 						href="/Courses/2800"
 						className="wd-dashboard-course-link"
 					>
@@ -85,9 +85,9 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link
+				</div>
+				<div className="wd-dashboard-course">
+					<Link
 						href="/Courses/3302"
 						className="wd-dashboard-course-link"
 					>
@@ -105,9 +105,9 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link
+				</div>
+				<div className="wd-dashboard-course">
+					<Link
 						href="/Courses/3500"
 						className="wd-dashboard-course-link"
 					>
@@ -125,9 +125,9 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link
+				</div>
+				<div className="wd-dashboard-course">
+					<Link
 						href="/Courses/3000"
 						className="wd-dashboard-course-link"
 					>
@@ -145,9 +145,9 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link
+				</div>
+				<div className="wd-dashboard-course">
+					<Link
 						href="/Courses/1800"
 						className="wd-dashboard-course-link"
 					>
@@ -165,15 +165,15 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link
+				</div>
+				<div className="wd-dashboard-course">
+					<Link
 						href="/Courses/3650"
 						className="wd-dashboard-course-link"
 					>
 						<Image
 							src="/images/reactjs.jpg"
-                            alt="image"
+							alt="image"
 							width={200}
 							height={150}
 						/>
@@ -185,7 +185,7 @@ export default function Dashboard() {
 							<button> Go </button>
 						</div>
 					</Link>
-                </div>
+				</div>
 			</div>
 		</div>
 	);
