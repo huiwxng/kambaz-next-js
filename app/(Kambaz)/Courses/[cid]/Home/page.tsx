@@ -7,12 +7,10 @@ export default function Home() {
 				<tbody>
 					<tr>
 						<td valign="top" width="70%">
-							{" "}
-							<Modules />{" "}
+							<Modules />
 						</td>
 						<td valign="top">
-							{" "}
-							<CourseStatus />{" "}
+							<CourseStatus />
 						</td>
 					</tr>
 				</tbody>
