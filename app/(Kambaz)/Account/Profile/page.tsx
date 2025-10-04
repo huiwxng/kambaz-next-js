@@ -1,45 +1,60 @@
 import Link from "next/link";
+import { FormControl, FormSelect } from "react-bootstrap";
+
 export default function Profile() {
 	return (
 		<div id="wd-profile-screen">
 			<h3>Profile</h3>
-			<input
-				defaultValue="alice"
+			<FormControl
+				id="wd-username"
 				placeholder="username"
-				className="wd-username"
+				defaultValue="alice"
+				className="mb-2"
 			/>
-			<br />
-			<input
-				defaultValue="123"
+			<FormControl
+				id="wd-password"
 				placeholder="password"
-				type="password"
-				className="wd-password"
+				defaultValue="123"
+				className="mb-2"
 			/>
-			<br />
-			<input
-				defaultValue="Alice"
-				placeholder="First Name"
+			<FormControl
 				id="wd-firstname"
+				placeholder="First Name"
+				defaultValue="Alice"
+				className="mb-2"
 			/>
-			<br />
-			<input
-				defaultValue="Wonderland"
-				placeholder="Last Name"
+
+			<FormControl
 				id="wd-lastname"
+				placeholder="Last Name"
+				defaultValue="Wonderland"
+				className="mb-2"
 			/>
-			<br />
-			<input defaultValue="2000-01-01" type="date" id="wd-dob" />
-			<br />
-			<input defaultValue="alice@wonderland" type="email" id="wd-email" />
-			<br />
-			<select defaultValue="FACULTY" id="wd-role">
-				<option value="USER">User</option>{" "}
+
+			<FormControl id="wd-dob" type="date" className="mb-2" />
+
+			<FormControl
+				id="wd-email"
+				type="email"
+				placeholder="email"
+				defaultValue="alice@wonderland.com"
+				className="mb-2"
+			/>
+
+			<FormSelect id="wd-role" defaultValue="USER" className="mb-3">
+				<option value="USER">User</option>
 				<option value="ADMIN">Admin</option>
-				<option value="FACULTY">Faculty</option>{" "}
+				<option value="FACULTY">Faculty</option>
 				<option value="STUDENT">Student</option>
-			</select>
-			<br />
-			<Link href="Signin"> Sign out </Link>
+			</FormSelect>
+
+			<Link
+				href="/Account/Signin"
+				id="wd-signout-btn"
+				className="btn btn-danger w-100 mb-2"
+			>
+				Sign out
+			</Link>
 		</div>
 	);
 }
