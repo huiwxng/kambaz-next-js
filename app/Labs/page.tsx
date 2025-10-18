@@ -27,7 +27,7 @@ export default function Labs() {
 				</li>
 				<li>
 					<a
-						href="https://github.com/your-username/your-repo"
+						href="https://github.com/huiwxng/kambaz-next-js"
 						target="_blank"
 						id="wd-github"
 					>
