@@ -7,7 +7,7 @@ import AssignmentsControls from "./AssignmentsControls";
 import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import AssignmentEndButtons from "./AssignmentEndButtons";
 import AssignmentStartButtons from "./AssignmentStartButtons";
-import * as db from "../../../Database";
+import * as db from "@/app/(Kambaz)/Database";
 import { useParams } from "next/navigation";
 
 export default function Assignments() {
