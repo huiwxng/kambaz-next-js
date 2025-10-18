@@ -10,7 +10,6 @@ import {
 	FormCheck,
 	Row,
 	Col,
-	Button,
 } from "react-bootstrap";
 import * as db from "../../../../Database/page";
 import Link from "next/link";
