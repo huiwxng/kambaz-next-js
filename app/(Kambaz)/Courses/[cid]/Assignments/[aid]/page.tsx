@@ -22,10 +22,10 @@ export default function AssignmentEditor() {
 	const title = a?.title ?? "Assignment";
 	const points = a?.points ?? 100;
 	const due = a?.due ?? "2025-05-13";
-	const availableFrom = a?.availableFrom ?? a?.available ?? "2025-05-06";
-	const availableUntil = a?.availableUntil ?? "2025-05-20";
+	const availableFrom = a?.available ?? "2025-05-06";
+	const availableUntil = a?.available ?? "2025-05-20";
 	const description =
-		a?.description ??
+		(a as { description?: string })?.description ??
 		`The assignment is available online.
 
 Submit a link to the landing page of your Web application running on Netlify.
