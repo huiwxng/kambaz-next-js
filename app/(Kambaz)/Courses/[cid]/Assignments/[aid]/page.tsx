@@ -11,7 +11,7 @@ import {
 	Row,
 	Col,
 } from "react-bootstrap";
-import * as db from "../../../../Database/page";
+import * as db from "../../../../Database";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 

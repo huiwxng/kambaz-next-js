@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import * as db from "../../../Database/page";
+import * as db from "../../../Database";
 import { BsGripVertical } from "react-icons/bs";
 import ModulesControls from "./ModulesControls";
 import ModuleControlButtons from "./ModuleControlButtons";

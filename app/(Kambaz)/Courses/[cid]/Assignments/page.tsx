@@ -7,7 +7,7 @@ import AssignmentsControls from "./AssignmentsControls";
 import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import AssignmentEndButtons from "./AssignmentEndButtons";
 import AssignmentStartButtons from "./AssignmentStartButtons";
-import * as db from "../../../Database/page";
+import * as db from "../../../Database";
 import { useParams } from "next/navigation";
 
 export default function Assignments() {
@@ -23,7 +23,7 @@ export default function Assignments() {
 					<AssignmentsControls />
 				</Col>
 			</Row>
-			
+
 			<ListGroup className="rounded-0" id="wd-modules">
 				<ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
 					<div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">

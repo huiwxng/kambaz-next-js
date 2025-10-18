@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import * as db from "../../../../Database/page";
+import * as db from "../../../../Database";
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 export default function PeopleTable() {
@@ -34,7 +34,7 @@ export default function PeopleTable() {
 								<td className="wd-full-name text-nowrap">
 									<FaUserCircle className="me-2 fs-1 text-secondary" />
 									<span className="wd-first-name">
-										{user.firstName} {" "}
+										{user.firstName}{" "}
 									</span>
 									<span className="wd-last-name">
 										{user.lastName}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import * as db from "../Database/page";
+import * as db from "../Database";
 import {
 	Row,
 	Col,
