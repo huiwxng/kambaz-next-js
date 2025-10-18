@@ -1,41 +1,59 @@
 // app/(Kambaz)/Courses/[cid]/Assignments/[aid]/page.tsx
 "use client";
 
-import { Container, Form, FormLabel, FormControl, FormSelect, FormCheck, Row, Col, Button } from "react-bootstrap";
+import {
+	Container,
+	Form,
+	FormLabel,
+	FormControl,
+	FormSelect,
+	FormCheck,
+	Row,
+	Col,
+	Button,
+} from "react-bootstrap";
+import * as db from "../../../../Database/page";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function AssignmentEditor() {
+	const { cid, aid } = useParams();
+	const a = db.assignments.find((x) => x._id === aid && x.course === cid);
+
+	const title = a?.title ?? "Assignment";
+	const points = a?.points ?? 100;
+	const due = a?.due ?? "2025-05-13";
+	const availableFrom = a?.availableFrom ?? a?.available ?? "2025-05-06";
+	const availableUntil = a?.availableUntil ?? "2025-05-20";
+	const description =
+		a?.description ??
+		`The assignment is available online.
+
+Submit a link to the landing page of your Web application running on Netlify.
+
+The landing page should include:
+• Your full name and section
+• Links to each of the lab assignments
+• Link to the Kanbas application
+• Links to all relevant source code repositories
+
+The Kanbas application should include a link to navigate back to the landing page.`;
+
 	return (
 		<Container id="wd-assignments-editor" className="px-0">
 			<Form>
 				<div className="mb-3">
 					<FormLabel htmlFor="wd-name">Assignment Name</FormLabel>
-					<FormControl id="wd-name" defaultValue="A1" />
+					<FormControl id="wd-name" defaultValue={title} />
 				</div>
 
 				<div className="mb-4">
 					<div
 						id="wd-description"
 						className="border rounded p-3 pt-4"
+						style={{ whiteSpace: "pre-wrap" }}
 					>
-						The assignment is{" "}
-						<span className="text-danger">available online</span>.
-						<br />
-						<br />
-						Submit a link to the landing page of your Web
-						application running on Netlify.
-						<br />
-						<br />
-						The landing page should include the following:
-						<ul className="mb-2">
-							<li>Your full name and section</li>
-							<li>Links to each of the lab assignments</li>
-							<li>Link to the Kanbas application</li>
-							<li>
-								Links to all relevant source code repositories
-							</li>
-						</ul>
-						The Kanbas application should include a link to navigate
-						back to the landing page.
+						{description}
 					</div>
 				</div>
 
@@ -49,7 +67,7 @@ export default function AssignmentEditor() {
 						<FormControl
 							id="wd-points"
 							type="number"
-							defaultValue={100}
+							defaultValue={points}
 						/>
 					</Col>
 				</Row>
@@ -176,7 +194,7 @@ export default function AssignmentEditor() {
 								<FormControl
 									id="wd-due-date"
 									type="date"
-									defaultValue="2024-05-13"
+									defaultValue={String(due).slice(0, 10)}
 								/>
 							</div>
 
@@ -191,7 +209,9 @@ export default function AssignmentEditor() {
 									<FormControl
 										id="wd-available-from"
 										type="date"
-										defaultValue="2024-05-06"
+										defaultValue={String(
+											availableFrom
+										).slice(0, 10)}
 									/>
 								</Col>
 								<Col>
@@ -204,7 +224,9 @@ export default function AssignmentEditor() {
 									<FormControl
 										id="wd-available-until"
 										type="date"
-										defaultValue="2024-05-20"
+										defaultValue={String(
+											availableUntil
+										).slice(0, 10)}
 									/>
 								</Col>
 							</Row>
@@ -215,10 +237,18 @@ export default function AssignmentEditor() {
 				<hr className="mb-3" />
 
 				<div className="text-end">
-					<Button variant="secondary" className="me-2">
+					<Link
+						href={`/Courses/${cid}/Assignments`}
+						className="btn btn-secondary me-2"
+					>
 						Cancel
-					</Button>
-					<Button variant="danger">Save</Button>
+					</Link>
+					<Link
+						href={`/Courses/${cid}/Assignments`}
+						className="btn btn-danger"
+					>
+						Save
+					</Link>
 				</div>
 			</Form>
 		</Container>
