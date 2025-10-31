@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,14 +11,13 @@ import { FormControl, Button } from "react-bootstrap";
 export default function Signin() {
 	type Credentials = { username: string; password: string };
 	type User = { username: string; password: string; [key: string]: unknown };
-	type RootState = { accountReducer: { currentUser: User | null } };
 	const [credentials, setCredentials] = useState<Credentials>({
 		username: "",
 		password: "",
 	});
 	const dispatch = useDispatch();
 	const router = useRouter();
-	const currentUser = useSelector((state: RootState) => state.accountReducer.currentUser);
+	const { currentUser } = useSelector((state: any) => state.accountReducer);
 
 	useEffect(() => {
 		if (currentUser) {
