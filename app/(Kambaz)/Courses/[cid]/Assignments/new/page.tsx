@@ -1,4 +1,3 @@
-// app/(Kambaz)/Courses/[cid]/Assignments/[aid]/page.tsx
 "use client";
 
 import {
@@ -12,62 +11,23 @@ import {
 	Col,
 	Button,
 } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useSelector, useDispatch } from "react-redux";
-import { updateAssignment } from "../reducer";
+import { useDispatch } from "react-redux";
+import { addAssignment } from "../reducer";
 
-interface Assignment {
-	_id: string;
-	title: string;
-	course: string;
-	available: string;
-	due: string;
-	points: number;
-	description?: string;
-	availableFrom?: string;
-	availableUntil?: string;
-}
-
-interface RootState {
-	assignmentsReducer: {
-		assignments: Assignment[];
-	};
-}
-
-export default function AssignmentEditor() {
-	const { cid, aid } = useParams();
+export default function NewAssignmentEditor() {
+	const { cid } = useParams();
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { assignments } = useSelector(
-		(state: RootState) => state.assignmentsReducer
-	);
-
-	const existingAssignment = assignments.find(
-		(x) => x._id === aid && x.course === cid
-	);
 
 	const [assignment, setAssignment] = useState({
-		title: "",
+		title: "New Assignment",
 		points: 100,
 		due: "2025-05-13",
 		availableFrom: "2025-05-06",
 		availableUntil: "2025-05-20",
-		description: "",
-	});
-
-	useEffect(() => {
-		if (existingAssignment) {
-			setAssignment({
-				title: existingAssignment.title,
-				points: existingAssignment.points,
-				due: existingAssignment.availableUntil || "2025-05-13",
-				availableFrom: existingAssignment.availableFrom || "2025-05-06",
-				availableUntil:
-					existingAssignment.availableUntil || "2025-05-20",
-				description:
-					existingAssignment.description ||
-					`The assignment is available online.
+		description: `The assignment is available online.
 
 Submit a link to the landing page of your Web application running on Netlify.
 
@@ -78,31 +38,23 @@ The landing page should include:
 • Links to all relevant source code repositories
 
 The Kanbas application should include a link to navigate back to the landing page.`,
-			});
-		}
-	}, [existingAssignment]);
+	});
 
 	const handleSave = () => {
-		if (existingAssignment) {
-			dispatch(
-				updateAssignment({
-					...existingAssignment,
-					...assignment,
-					available: `${assignment.availableFrom} at 12:00am`,
-					due: `${assignment.due} at 11:59pm`,
-				})
-			);
-		}
+		dispatch(
+			addAssignment({
+				...assignment,
+				course: cid as string,
+				available: `${assignment.availableFrom} at 12:00am`,
+				due: `${assignment.due} at 11:59pm`,
+			})
+		);
 		router.push(`/Courses/${cid}/Assignments`);
 	};
 
 	const handleCancel = () => {
 		router.push(`/Courses/${cid}/Assignments`);
 	};
-
-	if (!existingAssignment) {
-		return <div>Assignment not found</div>;
-	}
 
 	return (
 		<Container id="wd-assignments-editor" className="px-0">

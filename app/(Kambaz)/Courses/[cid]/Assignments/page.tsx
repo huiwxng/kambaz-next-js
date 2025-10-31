@@ -7,12 +7,52 @@ import AssignmentsControls from "./AssignmentsControls";
 import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import AssignmentEndButtons from "./AssignmentEndButtons";
 import AssignmentStartButtons from "./AssignmentStartButtons";
-import * as db from "../../../Database";
 import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
+
+interface Assignment {
+	_id: string;
+	title: string;
+	course: string;
+	available: string;
+	due: string;
+	points: number;
+	description?: string;
+	availableFrom?: string;
+	availableUntil?: string;
+}
+
+interface User {
+	_id: string;
+	username: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	role: string;
+}
+
+interface RootState {
+	assignmentsReducer: {
+		assignments: Assignment[];
+	};
+	accountReducer: {
+		currentUser: User | null;
+	};
+}
 
 export default function Assignments() {
 	const { cid } = useParams();
-	const assignments = db.assignments.filter((a) => a.course === cid);
+	const { assignments } = useSelector(
+		(state: RootState) => state.assignmentsReducer
+	);
+	const { currentUser } = useSelector(
+		(state: RootState) => state.accountReducer
+	);
+	const courseAssignments = assignments.filter((a) => a.course === cid);
+
+	const isFaculty =
+		currentUser?.role === "FACULTY" || currentUser?.role === "TA";
+
 	return (
 		<div id="wd-assignments">
 			<Row>
@@ -29,16 +69,16 @@ export default function Assignments() {
 					<div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
 						<BsGripVertical className="me-2 fs-3" />
 						<span className="me-auto">ASSIGNMENTS</span>
-						<AssignmentsControlButtons />
+						{isFaculty && <AssignmentsControlButtons />}
 					</div>
 
 					<ListGroup className="wd-lessons rounded-0">
-						{assignments.length === 0 ? (
+						{courseAssignments.length === 0 ? (
 							<ListGroupItem className="wd-lesson p-3 ps-1 text-muted">
 								No assignments for this course.
 							</ListGroupItem>
 						) : (
-							assignments.map((a) => (
+							courseAssignments.map((a) => (
 								<ListGroupItem
 									key={a._id}
 									className="wd-lesson p-3 ps-1"
@@ -68,7 +108,16 @@ export default function Assignments() {
 											</div>
 										</Col>
 										<Col xs="auto">
-											<AssignmentEndButtons />
+											{isFaculty ? (
+												<AssignmentEndButtons
+													assignmentId={a._id}
+												/>
+											) : (
+												<AssignmentEndButtons
+													assignmentId={a._id}
+													showDeleteButton={false}
+												/>
+											)}
 										</Col>
 									</Row>
 								</ListGroupItem>
