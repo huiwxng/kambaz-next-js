@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import * as db from "../../../../Database";
+import * as db from "../../../../../../Database";
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 export default function PeopleTable() {
