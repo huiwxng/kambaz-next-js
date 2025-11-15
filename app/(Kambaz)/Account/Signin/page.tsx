@@ -27,9 +27,9 @@ export default function Signin() {
 
 	const signin = () => {
 		console.log("Sign in attempt:", credentials);
-		console.log("Available users:", db.users);
+		console.log("Available users:", (db as any).users);
 
-		const user = db.users.find(
+		const user = (db as any).users.find(
 			(u: User) =>
 				u.username === credentials.username &&
 				u.password === credentials.password

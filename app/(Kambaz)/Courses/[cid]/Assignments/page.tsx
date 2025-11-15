@@ -1,131 +1,125 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, type MouseEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAssignments, deleteAssignment } from "./reducer";
+import * as client from "../../client";
 import { BsGripVertical } from "react-icons/bs";
-import { Col, Row, ListGroup, ListGroupItem } from "react-bootstrap";
-import AssignmentsSearchBar from "./AssignmentsSearchBar";
-import AssignmentsControls from "./AssignmentsControls";
-import AssignmentsControlButtons from "./AssignmentsControlButtons";
-import AssignmentEndButtons from "./AssignmentEndButtons";
-import AssignmentStartButtons from "./AssignmentStartButtons";
-import { useParams } from "next/navigation";
-import { useSelector } from "react-redux";
-
-interface Assignment {
-	_id: string;
-	title: string;
-	course: string;
-	available: string;
-	due: string;
-	points: number;
-	description?: string;
-	availableFrom?: string;
-	availableUntil?: string;
-}
-
-interface User {
-	_id: string;
-	username: string;
-	firstName: string;
-	lastName: string;
-	email: string;
-	role: string;
-}
-
-interface RootState {
-	assignmentsReducer: {
-		assignments: Assignment[];
-	};
-	accountReducer: {
-		currentUser: User | null;
-	};
-}
+import { FaTrash } from "react-icons/fa";
+import { IoEllipsisVertical } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 
 export default function Assignments() {
 	const { cid } = useParams();
+	const router = useRouter();
 	const { assignments } = useSelector(
-		(state: RootState) => state.assignmentsReducer
+		(state: any) => state.assignmentsReducer
 	);
-	const { currentUser } = useSelector(
-		(state: RootState) => state.accountReducer
-	);
-	const courseAssignments = assignments.filter((a) => a.course === cid);
+	const dispatch = useDispatch();
 
-	const isFaculty =
-		currentUser?.role === "FACULTY" || currentUser?.role === "TA";
+	const removeAssignment = async (assignmentId: string) => {
+		await client.deleteAssignment(assignmentId);
+		dispatch(deleteAssignment(assignmentId));
+	};
+
+	useEffect(() => {
+		if (!cid) return;
+		const fetchAssignments = async () => {
+			const assignments = await client.findAssignmentsForCourse(
+				cid as string
+			);
+			dispatch(setAssignments(assignments));
+		};
+		fetchAssignments();
+	}, [cid, dispatch]);
 
 	return (
 		<div id="wd-assignments">
-			<Row>
-				<Col>
-					<AssignmentsSearchBar />
-				</Col>
-				<Col xs="auto">
-					<AssignmentsControls />
-				</Col>
-			</Row>
+			<div className="d-flex justify-content-between align-items-center mb-3">
+				<input
+					id="wd-search-assignment"
+					className="form-control w-50"
+					placeholder="Search..."
+				/>
+				<div>
+					<button
+						id="wd-add-assignment-group"
+						className="btn btn-secondary me-2"
+					>
+						<FaPlus className="me-2" />
+						Group
+					</button>
+					<button
+						id="wd-add-assignment"
+						className="btn btn-danger"
+						onClick={() =>
+							router.push(
+								`/Kambaz/Courses/${cid}/Assignments/new`
+							)
+						}
+					>
+						<FaPlus className="me-2" />
+						Assignment
+					</button>
+				</div>
+			</div>
 
-			<ListGroup className="rounded-0" id="wd-modules">
-				<ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
-					<div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
+			<ul id="wd-assignment-list" className="list-group rounded-0">
+				<li className="wd-assignment-list-item list-group-item p-0 mb-5 fs-5 border-gray">
+					<div className="wd-assignments-title p-3 ps-2 bg-secondary">
 						<BsGripVertical className="me-2 fs-3" />
-						<span className="me-auto">ASSIGNMENTS</span>
-						{isFaculty && <AssignmentsControlButtons />}
+						ASSIGNMENTS
 					</div>
 
-					<ListGroup className="wd-lessons rounded-0">
-						{courseAssignments.length === 0 ? (
-							<ListGroupItem className="wd-lesson p-3 ps-1 text-muted">
-								No assignments for this course.
-							</ListGroupItem>
-						) : (
-							courseAssignments.map((a) => (
-								<ListGroupItem
-									key={a._id}
-									className="wd-lesson p-3 ps-1"
-								>
-									<Row className="align-items-center">
-										<Col xs="auto">
-											<AssignmentStartButtons />
-										</Col>
-										<Col>
-											<div>
-												<Link
-													href={`/Courses/${cid}/Assignments/${a._id}`}
-													className="wd-assignment-link text-decoration-none"
-												>
-													<h3 className="text-black m-0">
-														{a.title}
-													</h3>
-												</Link>
-												<small className="text-muted">
-													<span className="text-danger">
-														Multiple Modules
-													</span>{" "}
-													| <b>Not available until</b>{" "}
-													{a.available} | <b>Due</b>{" "}
-													{a.due} | {a.points} pts
-												</small>
-											</div>
-										</Col>
-										<Col xs="auto">
-											{isFaculty ? (
-												<AssignmentEndButtons
-													assignmentId={a._id}
-												/>
-											) : (
-												<AssignmentEndButtons
-													assignmentId={a._id}
-													showDeleteButton={false}
-												/>
-											)}
-										</Col>
-									</Row>
-								</ListGroupItem>
-							))
-						)}
-					</ListGroup>
-				</ListGroupItem>
-			</ListGroup>
+					<ul className="wd-assignment-list list-group rounded-0">
+						{assignments.map((assignment: any) => (
+							<li
+								key={assignment._id}
+								className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex align-items-center"
+							>
+								<BsGripVertical className="me-2 fs-3" />
+								<div className="flex-grow-1">
+									<a
+										className="wd-assignment-link text-decoration-none text-dark"
+										href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+										onClick={(
+											e: MouseEvent<HTMLAnchorElement>
+										) => {
+											e.preventDefault();
+											router.push(
+												`/Kambaz/Courses/${cid}/Assignments/${assignment._id}`
+											);
+										}}
+									>
+										<strong>{assignment.title}</strong>
+									</a>
+									<div className="text-muted small">
+										<span className="text-danger">
+											Multiple Modules
+										</span>{" "}
+										| <strong>Not available until</strong>{" "}
+										{assignment.availableDate} |<br />
+										<strong>Due</strong>{" "}
+										{assignment.dueDate} |{" "}
+										{assignment.points} pts
+									</div>
+								</div>
+								<div className="d-flex align-items-center">
+									<FaTrash
+										className="text-danger me-3"
+										style={{ cursor: "pointer" }}
+										onClick={() =>
+											removeAssignment(assignment._id)
+										}
+									/>
+									<IoEllipsisVertical className="fs-4" />
+								</div>
+							</li>
+						))}
+					</ul>
+				</li>
+			</ul>
 		</div>
 	);
 }
