@@ -1,14 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import * as client from "../Courses/client";
+import { setCourses } from "../Courses/reducer";
 
 export default function Dashboard() {
 	const { courses } = useSelector((state: any) => state.coursesReducer);
 	const { currentUser } = useSelector((state: any) => state.accountReducer);
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const [allCourses, setAllCourses] = useState<any[]>([]);
 	const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
 	const [showAllCourses, setShowAllCourses] = useState(false);
@@ -22,50 +24,58 @@ export default function Dashboard() {
 		description: "New Description",
 	});
 
-	const fetchCourses = async () => {
+	const fetchCourses = useCallback(async () => {
 		try {
 			const courses = await client.findMyCourses();
-			dispatch({ type: "SET_COURSES", courses });
+			dispatch(setCourses(courses));
 			setEnrolledCourses(courses);
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error);
+			if (error.response?.status === 401) {
+				router.push("/Account/Signin");
+			}
 		}
-	};
-	const fetchAllCourses = async () => {
+	}, [dispatch, router]);
+
+	const fetchAllCourses = useCallback(async () => {
 		try {
 			const allCourses = await client.fetchAllCourses();
 			setAllCourses(allCourses);
 		} catch (error) {
 			console.error(error);
 		}
-	};
+	}, []);
 
 	const onAddNewCourse = async () => {
 		const newCourse = await client.createCourse(course);
-		dispatch({ type: "SET_COURSES", courses: [...courses, newCourse] });
+		dispatch(setCourses([...courses, newCourse]));
 		setEnrolledCourses([...enrolledCourses, newCourse]);
 	};
+
 	const onDeleteCourse = async (courseId: string) => {
 		await client.deleteCourse(courseId);
 		const newCourses = courses.filter(
 			(course: any) => course._id !== courseId
 		);
-		dispatch({ type: "SET_COURSES", courses: newCourses });
+		dispatch(setCourses(newCourses));
 		setEnrolledCourses(newCourses);
 	};
+
 	const onUpdateCourse = async () => {
 		await client.updateCourse(course);
-		dispatch({
-			type: "SET_COURSES",
-			courses: courses.map((c: any) => {
-				if (c._id === course._id) {
-					return course;
-				} else {
-					return c;
-				}
-			}),
-		});
+		dispatch(
+			setCourses(
+				courses.map((c: any) => {
+					if (c._id === course._id) {
+						return course;
+					} else {
+						return c;
+					}
+				})
+			)
+		);
 	};
+
 	const enrollInCourse = async (courseId: string) => {
 		await client.enrollInCourse(courseId);
 		fetchCourses();
@@ -81,9 +91,20 @@ export default function Dashboard() {
 	};
 
 	useEffect(() => {
-		fetchCourses();
-		fetchAllCourses();
-	}, [currentUser]);
+		if (currentUser) {
+			fetchCourses();
+			fetchAllCourses();
+		}
+	}, [currentUser, fetchCourses, fetchAllCourses]);
+
+	if (!currentUser) {
+		return (
+			<div id="wd-dashboard">
+				<h1>Dashboard</h1>
+				<p>Please sign in to view courses.</p>
+			</div>
+		);
+	}
 
 	const displayedCourses = showAllCourses ? allCourses : enrolledCourses;
 
@@ -168,7 +189,14 @@ export default function Dashboard() {
 									>
 										{course.description}
 									</p>
-									<button className="btn btn-primary">
+									<button
+										className="btn btn-primary"
+										onClick={() =>
+											router.push(
+												`/Courses/${course._id}/Home`
+											)
+										}
+									>
 										Go
 									</button>
 

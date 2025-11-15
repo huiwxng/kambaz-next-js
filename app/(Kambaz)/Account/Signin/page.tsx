@@ -5,16 +5,15 @@ import { useRouter } from "next/navigation";
 import { setCurrentUser } from "../reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import * as db from "../../Database";
 import { FormControl, Button } from "react-bootstrap";
+import * as client from "../client";
 
 export default function Signin() {
-	type Credentials = { username: string; password: string };
-	type User = { username: string; password: string; [key: string]: unknown };
-	const [credentials, setCredentials] = useState<Credentials>({
+	const [credentials, setCredentials] = useState<any>({
 		username: "",
 		password: "",
 	});
+	const [error, setError] = useState("");
 	const dispatch = useDispatch();
 	const router = useRouter();
 	const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -25,29 +24,27 @@ export default function Signin() {
 		}
 	}, [currentUser, router]);
 
-	const signin = () => {
-		console.log("Sign in attempt:", credentials);
-		console.log("Available users:", (db as any).users);
-
-		const user = (db as any).users.find(
-			(u: User) =>
-				u.username === credentials.username &&
-				u.password === credentials.password
-		);
-
-		console.log("Found user:", user);
-
-		if (!user) {
-			alert("Invalid username or password");
-			return;
+	const signin = async () => {
+		try {
+			const user = await client.signin(credentials);
+			if (!user) {
+				setError("Invalid username or password");
+				return;
+			}
+			dispatch(setCurrentUser(user));
+			router.push("/Dashboard");
+		} catch (err: any) {
+			setError(
+				err.response?.data?.message ||
+					"Unable to login. Try again later."
+			);
 		}
-
-		dispatch(setCurrentUser(user));
-		router.push("/Dashboard");
 	};
+
 	return (
 		<div id="wd-signin-screen">
 			<h1>Sign in</h1>
+			{error && <div className="alert alert-danger">{error}</div>}
 			<FormControl
 				value={credentials.username}
 				onChange={(e) =>
@@ -67,10 +64,10 @@ export default function Signin() {
 				type="password"
 				id="wd-password"
 			/>
-			<Button onClick={signin} id="wd-signin-btn" className="w-100">
+			<Button onClick={signin} id="wd-signin-btn" className="w-100 mb-2">
 				Sign in
 			</Button>
-			<Link id="wd-signup-link" href="Signup">
+			<Link id="wd-signup-link" href="/Account/Signup">
 				Sign up
 			</Link>
 		</div>

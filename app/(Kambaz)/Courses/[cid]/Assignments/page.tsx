@@ -54,9 +54,7 @@ export default function Assignments() {
 						id="wd-add-assignment"
 						className="btn btn-danger"
 						onClick={() =>
-							router.push(
-								`/Kambaz/Courses/${cid}/Assignments/new`
-							)
+							router.push(`/Courses/${cid}/Assignments/new`)
 						}
 					>
 						<FaPlus className="me-2" />
@@ -82,13 +80,13 @@ export default function Assignments() {
 								<div className="flex-grow-1">
 									<a
 										className="wd-assignment-link text-decoration-none text-dark"
-										href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+										href={`#/Courses/${cid}/Assignments/${assignment._id}`}
 										onClick={(
 											e: MouseEvent<HTMLAnchorElement>
 										) => {
 											e.preventDefault();
 											router.push(
-												`/Kambaz/Courses/${cid}/Assignments/${assignment._id}`
+												`/Courses/${cid}/Assignments/${assignment._id}`
 											);
 										}}
 									>

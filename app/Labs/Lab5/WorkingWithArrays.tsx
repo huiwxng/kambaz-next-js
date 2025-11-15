@@ -1,6 +1,7 @@
+"use client";
 import React, { useState } from "react";
+import { FormControl } from "react-bootstrap";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
-
 export default function WorkingWithArrays() {
 	const API = `${HTTP_SERVER}/lab5/todos`;
 	const [todo, setTodo] = useState({
@@ -10,6 +11,7 @@ export default function WorkingWithArrays() {
 		due: "2021-09-09",
 		completed: false,
 	});
+
 	return (
 		<div id="wd-working-with-arrays">
 			<h3>Working with Arrays</h3>
@@ -26,10 +28,10 @@ export default function WorkingWithArrays() {
 			>
 				Get Todo by ID
 			</a>
-			<input
+			<FormControl
 				id="wd-todo-id"
 				defaultValue={todo.id}
-				className="form-control w-50"
+				className="w-50"
 				onChange={(e) => setTodo({ ...todo, id: e.target.value })}
 			/>
 			<hr />
@@ -44,7 +46,7 @@ export default function WorkingWithArrays() {
 			<hr />
 			<h3>Creating new Items in an Array</h3>
 			<a
-				id="wd-create-todo"
+				id="wd-retrieve-completed-todos"
 				className="btn btn-primary"
 				href={`${API}/create`}
 			>
@@ -59,9 +61,9 @@ export default function WorkingWithArrays() {
 			>
 				Remove Todo with ID = {todo.id}{" "}
 			</a>
-			<input
+			<FormControl
 				defaultValue={todo.id}
-				className="form-control w-50"
+				className="w-50"
 				onChange={(e) => setTodo({ ...todo, id: e.target.value })}
 			/>
 			<hr />
@@ -70,20 +72,64 @@ export default function WorkingWithArrays() {
 				href={`${API}/${todo.id}/title/${todo.title}`}
 				className="btn btn-primary float-end"
 			>
-				Update Todo
+				Update Title
 			</a>
-			<input
+			<FormControl
 				defaultValue={todo.id}
-				className="form-control w-25 float-start me-2"
+				className="w-25 float-start me-2"
 				onChange={(e) => setTodo({ ...todo, id: e.target.value })}
 			/>
-			<input
+			<FormControl
 				defaultValue={todo.title}
-				className="form-control w-50 float-start"
+				className="w-50 float-start"
 				onChange={(e) => setTodo({ ...todo, title: e.target.value })}
 			/>
 			<br />
 			<br />
+			<hr />
+
+			<h4>Update Description</h4>
+			<a
+				href={`${API}/${todo.id}/description/${todo.description}`}
+				className="btn btn-primary float-end"
+				id="wd-update-todo-description"
+			>
+				Update Description
+			</a>
+			<FormControl
+				id="wd-todo-description"
+				defaultValue={todo.description}
+				className="w-75 mb-2"
+				onChange={(e) =>
+					setTodo({ ...todo, description: e.target.value })
+				}
+			/>
+			<br />
+			<br />
+			<hr />
+
+			<h4>Update Completed Status</h4>
+			<a
+				href={`${API}/${todo.id}/completed/${todo.completed}`}
+				className="btn btn-primary float-end"
+				id="wd-update-todo-completed"
+			>
+				Update Completed
+			</a>
+			<div className="form-check">
+				<input
+					id="wd-todo-completed"
+					className="form-check-input"
+					type="checkbox"
+					checked={todo.completed}
+					onChange={(e) =>
+						setTodo({ ...todo, completed: e.target.checked })
+					}
+				/>
+				<label className="form-check-label" htmlFor="wd-todo-completed">
+					Completed
+				</label>
+			</div>
 			<hr />
 		</div>
 	);

@@ -1,10 +1,12 @@
 "use client";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import CourseNavigation from "./Navigation";
 import EnrollmentProtectedRoute from "../../components/EnrollmentProtectedRoute";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
 import { FaAlignJustify } from "react-icons/fa";
+import * as client from "../client";
+import { setModules } from "./Modules/reducer";
 
 export default function CoursesLayout({ children }: { children: ReactNode }) {
 	const { cid } = useParams();
@@ -13,6 +15,23 @@ export default function CoursesLayout({ children }: { children: ReactNode }) {
 			coursesReducer: { courses: { _id: string; name?: string }[] };
 		}) => state.coursesReducer
 	);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (!cid) return;
+		const fetchModules = async () => {
+			try {
+				const modules = await client.findModulesForCourse(
+					cid as string
+				);
+				dispatch(setModules(modules));
+			} catch (err) {
+				console.error("Failed to fetch modules for course", cid, err);
+			}
+		};
+
+		fetchModules();
+	}, [cid, dispatch]);
 	const course = courses.find(
 		(course: { _id: string }) => course._id === cid
 	);

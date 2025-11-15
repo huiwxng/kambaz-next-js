@@ -44,7 +44,7 @@ export default function AssignmentEditor() {
 			await client.updateAssignment(assignment);
 			dispatch(updateAssignment(assignment));
 		}
-		router.push(`/Kambaz/Courses/${cid}/Assignments`);
+		router.push(`/Courses/${cid}/Assignments`);
 	};
 
 	return (
@@ -160,9 +160,7 @@ export default function AssignmentEditor() {
 			<div className="d-flex justify-content-end">
 				<button
 					className="btn btn-secondary me-2"
-					onClick={() =>
-						router.push(`/Kambaz/Courses/${cid}/Assignments`)
-					}
+					onClick={() => router.push(`/Courses/${cid}/Assignments`)}
 				>
 					Cancel
 				</button>
