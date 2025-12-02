@@ -16,6 +16,9 @@ export default function Assignments() {
 	const { assignments } = useSelector(
 		(state: any) => state.assignmentsReducer
 	);
+	const { currentUser } = useSelector(
+		(state: any) => state.accountReducer || { currentUser: null }
+	);
 	const dispatch = useDispatch();
 
 	const removeAssignment = async (assignmentId: string) => {
@@ -43,23 +46,29 @@ export default function Assignments() {
 					placeholder="Search..."
 				/>
 				<div>
-					<button
-						id="wd-add-assignment-group"
-						className="btn btn-secondary me-2"
-					>
-						<FaPlus className="me-2" />
-						Group
-					</button>
-					<button
-						id="wd-add-assignment"
-						className="btn btn-danger"
-						onClick={() =>
-							router.push(`/Courses/${cid}/Assignments/new`)
-						}
-					>
-						<FaPlus className="me-2" />
-						Assignment
-					</button>
+					{currentUser?.role !== "STUDENT" && (
+						<>
+							<button
+								id="wd-add-assignment-group"
+								className="btn btn-secondary me-2"
+							>
+								<FaPlus className="me-2" />
+								Group
+							</button>
+							<button
+								id="wd-add-assignment"
+								className="btn btn-danger"
+								onClick={() =>
+									router.push(
+										`/Courses/${cid}/Assignments/new`
+									)
+								}
+							>
+								<FaPlus className="me-2" />
+								Assignment
+							</button>
+						</>
+					)}
 				</div>
 			</div>
 
@@ -104,13 +113,15 @@ export default function Assignments() {
 									</div>
 								</div>
 								<div className="d-flex align-items-center">
-									<FaTrash
-										className="text-danger me-3"
-										style={{ cursor: "pointer" }}
-										onClick={() =>
-											removeAssignment(assignment._id)
-										}
-									/>
+									{currentUser?.role !== "STUDENT" && (
+										<FaTrash
+											className="text-danger me-3"
+											style={{ cursor: "pointer" }}
+											onClick={() =>
+												removeAssignment(assignment._id)
+											}
+										/>
+									)}
 									<IoEllipsisVertical className="fs-4" />
 								</div>
 							</li>
