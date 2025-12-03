@@ -2,9 +2,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Nav, NavItem, NavLink } from "react-bootstrap";
+import { RootState } from "../store";
 import { useSelector } from "react-redux";
 export default function AccountNavigation() {
-	const { currentUser } = useSelector((state: { accountReducer: { currentUser: unknown | null } }) => state.accountReducer);
+	const { currentUser } = useSelector((state: RootState) => state.accountReducer) as {
+    	currentUser: { role?: string } | null;
+	};
 	const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
 	const pathname = usePathname();
 	return (
@@ -18,6 +21,16 @@ export default function AccountNavigation() {
 					>
 						{link}{" "}
 					</NavLink>{" "}
+					{currentUser && currentUser.role === "ADMIN" && (
+						<NavLink
+							as={Link}
+							href={`/Account/Users`}
+							active={pathname.endsWith("Users")}
+						>
+							{" "}
+							Users{" "}
+						</NavLink>
+					)}
 				</NavItem>
 			))}
 		</Nav>
