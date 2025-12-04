@@ -101,7 +101,7 @@ export const findAssignmentById = async (assignmentId: string) => {
 };
 
 // ENROLLMENT FUNCTIONS
-export const enrollIntoCourse = async (userId: string, courseId: string) => {
+export const enrollInCourse = async (userId: string, courseId: string) => {
 	const response = await axiosWithCredentials.post(
 		`${USERS_API}/${userId}/courses/${courseId}`
 	);
