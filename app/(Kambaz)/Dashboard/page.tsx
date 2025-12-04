@@ -18,11 +18,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-	enrollUserInCourse,
-	unenrollUserFromCourse,
-	setEnrollments,
-} from "../Enrollments/reducer";
+import { setEnrollments } from "../Enrollments/reducer";
 import { setCourses } from "../Courses/reducer";
 import * as client from "../Courses/client";
 
@@ -47,8 +43,6 @@ export default function Dashboard() {
 		description: "New Description",
 	});
 
-	const isFaculty = currentUser?.role === "FACULTY";
-
 	if (!currentUser) {
 		return (
 			<div id="wd-dashboard">
@@ -57,6 +51,8 @@ export default function Dashboard() {
 			</div>
 		);
 	}
+
+	const isFaculty = currentUser.role === "FACULTY";
 
 	const isUserEnrolled = (courseId: string) =>
 		enrollments.some(
@@ -82,7 +78,7 @@ export default function Dashboard() {
 	};
 
 	const handleEnroll = async (courseId: string) => {
-		await client.enrollInCourse(currentUser._id, courseId);
+		await client.enrollIntoCourse(currentUser._id, courseId);
 		await fetchEnrollments();
 	};
 
@@ -95,17 +91,14 @@ export default function Dashboard() {
 		const newCourse = { ...course, _id: uuidv4() };
 
 		await client.createCourse(newCourse);
-		await fetchCourses();
+		await client.enrollInCourse(currentUser._id, newCourse._id);
 
-		dispatch(
-			enrollUserInCourse({
-				userId: currentUser._id,
-				courseId: newCourse._id,
-			})
-		);
+		await fetchCourses();
+		await fetchEnrollments();
 
 		setShowAllCourses(true);
 
+		// reset form
 		setCourse({
 			_id: "0",
 			name: "New Course",
@@ -223,7 +216,6 @@ export default function Dashboard() {
 										href={`/Courses/${c._id}/Home`}
 										className="wd-dashboard-course-link text-decoration-none text-dark"
 										onClick={(e) => {
-											// Block navigation for non-enrolled students
 											if (!enrolled && !isFaculty) {
 												const target =
 													e.target as HTMLElement;
