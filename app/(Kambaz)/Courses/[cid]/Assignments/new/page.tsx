@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addAssignment } from "../reducer";
+import * as client from "../../../client";
 
 export default function NewAssignmentEditor() {
 	const { cid } = useParams();
@@ -40,15 +41,20 @@ The landing page should include:
 The Kanbas application should include a link to navigate back to the landing page.`,
 	});
 
-	const handleSave = () => {
-		dispatch(
-			addAssignment({
-				...assignment,
-				course: cid as string,
-				available: `${assignment.availableFrom} at 12:00am`,
-				due: `${assignment.due} at 11:59pm`,
-			})
+	const handleSave = async () => {
+		const payload = {
+			title: assignment.title,
+			description: assignment.description,
+			points: assignment.points,
+			availableDate: assignment.availableFrom,
+			dueDate: assignment.due,
+			availableUntil: assignment.availableUntil,
+		};
+		const newAssignment = await client.createAssignment(
+			cid as string,
+			payload
 		);
+		dispatch(addAssignment(newAssignment));
 		router.push(`/Courses/${cid}/Assignments`);
 	};
 
