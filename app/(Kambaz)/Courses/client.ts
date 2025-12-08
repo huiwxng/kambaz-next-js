@@ -103,13 +103,13 @@ export const findAssignmentById = async (assignmentId: string) => {
 // ENROLLMENT FUNCTIONS
 export const enrollInCourse = async (userId: string, courseId: string) => {
 	const response = await axiosWithCredentials.post(
-		`${USERS_API}/${userId}/courses/${courseId}`
+		`${USERS_API}/${userId}/enrollments/${courseId}`
 	);
 	return response.data;
 };
 export const unenrollFromCourse = async (userId: string, courseId: string) => {
 	const response = await axiosWithCredentials.delete(
-		`${USERS_API}/${userId}/courses/${courseId}`
+		`${USERS_API}/${userId}/enrollments/${courseId}`
 	);
 	return response.data;
 };

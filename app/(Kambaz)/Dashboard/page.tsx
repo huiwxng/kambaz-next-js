@@ -39,7 +39,7 @@ export default function Dashboard() {
 		number: "New Number",
 		startDate: "2023-09-10",
 		endDate: "2023-12-15",
-		image: "/images/reactjs.png",
+		image: "/images/reactjs.jpg",
 		description: "New Description",
 	});
 
@@ -58,10 +58,10 @@ export default function Dashboard() {
 		enrollments.some(
 			(enrollment: any) =>
 				enrollment &&
-				enrollment.user &&
-				enrollment.user._id === currentUser._id &&
-				((typeof enrollment.course === "string" &&
-					enrollment.course === courseId) ||
+				(enrollment.user === currentUser._id ||
+					(enrollment.user &&
+						enrollment.user._id === currentUser._id)) &&
+				(enrollment.course === courseId ||
 					(enrollment.course && enrollment.course._id === courseId))
 		);
 
@@ -105,7 +105,7 @@ export default function Dashboard() {
 			number: "New Number",
 			startDate: "2023-09-10",
 			endDate: "2023-12-15",
-			image: "/images/reactjs.png",
+			image: "/images/reactjs.jpg",
 			description: "New Description",
 		});
 	};
@@ -230,13 +230,12 @@ export default function Dashboard() {
 									>
 										<CardImg
 											src={
-												c.image || "/images/reactjs.png"
+												c.image || "/images/reactjs.jpg"
 											}
 											variant="top"
 											width="100%"
 											height={160}
-										/>
-
+										/>{" "}
 										<CardBody>
 											<CardTitle className="text-nowrap overflow-hidden">
 												{c.name}
