@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import * as client from "./client";
+import * as courseClient from "../Courses/client";
 import { useEffect, useState } from "react";
 import { setCurrentUser } from "./reducer";
+import { setEnrollments } from "../Enrollments/reducer";
 import { useDispatch } from "react-redux";
 
 export default function Session({ children }: { children: any }) {
@@ -13,8 +15,14 @@ export default function Session({ children }: { children: any }) {
 		try {
 			const currentUser = await client.profile();
 			dispatch(setCurrentUser(currentUser));
+			// Fetch enrollments after getting the user
+			const enrollments = await courseClient.findMyEnrollments();
+			dispatch(setEnrollments(enrollments));
 		} catch (err: any) {
-			console.error(err);
+			// 401 is expected when not logged in - no need to log it
+			if (err.response?.status !== 401) {
+				console.error(err);
+			}
 		}
 		setPending(false);
 	};
